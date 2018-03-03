@@ -1,0 +1,59 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.2.21'
+        exposedVersion = '0.10.1'
+        postgresDriverVersion = '42.2.1'
+        javaSparkVersion = '2.7.1'
+        apacheCommonsCliVersion = '1.4'
+        jsonVersion = '20180130'
+        slf4jVersion = '1.7.25'
+    }
+}
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '2.0.2'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.21'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://dl.bintray.com/kotlin/exposed"
+    }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+
+    // Core.
+    compile "org.jetbrains.exposed:exposed:$exposedVersion"
+    compile "org.postgresql:postgresql:$postgresDriverVersion"
+    compile "com.sparkjava:spark-core:$javaSparkVersion"
+
+    // Util.
+    compile "commons-cli:commons-cli:$apacheCommonsCliVersion"
+    compile "org.json:json:$jsonVersion"
+
+    // Logging.
+    compile "org.slf4j:slf4j-log4j12:$slf4jVersion"
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+}
+
+shadowJar {
+    archiveName = 'meme-grid.jar'
+    manifest {
+        attributes 'Main-Class': 'com.edd.memegrid.LauncherKt'
+    }
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.5.1'
+}

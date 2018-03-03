@@ -1,0 +1,48 @@
+/* https://www.sitepoint.com/using-modern-css-to-build-a-responsive-image-grid */
+#grid {
+    font-size: 0;
+}
+
+.dark {
+    background-color: #0f1210;
+}
+
+.meme-wrapper {
+    font-size: 16px;
+    overflow: hidden;
+    display: inline-block;
+    margin-bottom: 8px;
+    width: calc(50% - 4px);
+    margin-right: 8px;
+}
+
+.meme-wrapper:nth-of-type(2n) {
+    margin-right: 0;
+}
+
+@media screen and (min-width: 50em) {
+    .meme-wrapper {
+        width: calc(25% - 6px);
+    }
+
+    .meme-wrapper:nth-of-type(2n) {
+        margin-right: 8px;
+    }
+
+    .meme-wrapper:nth-of-type(4n) {
+        margin-right: 0;
+    }
+}
+
+.meme-wrapper:hover .meme {
+    transform: scale(1.15);
+}
+
+.meme {
+    border: none;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    background: #ccc;
+    transition: transform .2s ease-in-out;
+}
