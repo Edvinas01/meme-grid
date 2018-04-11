@@ -1,48 +1,46 @@
-/* https://www.sitepoint.com/using-modern-css-to-build-a-responsive-image-grid */
-#grid {
-    font-size: 0;
+#header {
+    margin-bottom: 10px;
 }
 
-.dark {
+body {
+    margin: 0;
+}
+
+.dark-background {
     background-color: #0f1210;
 }
 
-.meme-wrapper {
+.block {
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: orange;
+    padding: 14px 28px;
     font-size: 16px;
-    overflow: hidden;
-    display: inline-block;
-    margin-bottom: 8px;
-    width: calc(50% - 4px);
-    margin-right: 8px;
+    cursor: pointer;
+    text-align: center;
 }
 
-.meme-wrapper:nth-of-type(2n) {
-    margin-right: 0;
+.list-meme {
+    width: 100%;
 }
 
-@media screen and (min-width: 50em) {
-    .meme-wrapper {
-        width: calc(25% - 6px);
-    }
-
-    .meme-wrapper:nth-of-type(2n) {
-        margin-right: 8px;
-    }
-
-    .meme-wrapper:nth-of-type(4n) {
-        margin-right: 0;
-    }
+.meme-sizer, .meme {
+    width: 20%;
 }
 
-.meme-wrapper:hover .meme {
-    transform: scale(1.15);
+@media screen and (max-width: 480px) {
+    .meme-sizer, .meme {
+        width: 50%;
+    }
 }
 
 .meme {
-    border: none;
-    max-width: 100%;
-    height: auto;
-    display: block;
-    background: #ccc;
-    transition: transform .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+.meme:hover {
+    box-shadow: 0 0 100px #000000;
+    transform: scale(1.1);
+    z-index: 2;
 }

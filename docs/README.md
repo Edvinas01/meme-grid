@@ -1,5 +1,7 @@
 # Meme Grid
-A grid for memes
+<p align="center">
+  <img src="screenshot.jpeg"/>
+</p>
 
 ## Building
 To build the project, you'll need to have JDK 8 installed. After you've got that ready, go to 
