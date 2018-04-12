@@ -37,10 +37,10 @@ class MemeSaver(
 
         StoredMemes.select {
             StoredMemes.id eq id
-        }.first().let {
-            val saved = Meme(it[StoredMemes.title], it[StoredMemes.url])
-            memeSaveListeners.forEach {
-                it.onMemeSaved(saved)
+        }.first().let { row ->
+            val saved = Meme(row[StoredMemes.title], row[StoredMemes.url])
+            memeSaveListeners.forEach { listener ->
+                listener.onMemeSaved(saved)
             }
             saved
         }

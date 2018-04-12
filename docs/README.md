@@ -1,11 +1,15 @@
-# Meme Grid
 <p align="center">
-  <img src="screenshot.jpeg"/>
+  <a href="https://memes.danevicius.lt" target="_blank">
+    <img src="screenshot.jpeg"/>
+  </a>
 </p>
 
+# Meme Grid [![Build Status](https://travis-ci.org/Edvinas01/meme-grid.svg?branch=master)](https://travis-ci.org/Edvinas01/meme-grid)
+The only hub for memes that you'll ever need.
+
 ## Building
-To build the project, you'll need to have JDK 8 installed. After you've got that ready, go to 
-root project dir and run:
+To build the project, you'll need to have JDK 8 installed. After you've got that ready, go to root 
+project dir and run:
 ```bash
 ./gradlew build
 ``` 
@@ -22,16 +26,9 @@ java -jar meme-grid.jar
 This will start the application and bind it to port `8080`.
 
 ## Running using Docker
-If you have Docker and Docker Compose setup on your machine, you can simply run:
+If you have Docker and Docker Compose setup, you can simply run:
 ```bash
 docker-compose up
 ```
 
-This will also start the application on port `8080` and also expose PostgreSQL on port 
-`5432`.
-
-## Help
-You can get more info on available options by running:
-```bash
-java -jar meme-grid.jar --help
-```
+This will start the application on port `8080` and expose PostgreSQL on port `5432`.
