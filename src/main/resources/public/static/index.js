@@ -27,7 +27,7 @@ window.onload = () => {
       a.href = url;
 
       const img = document.createElement('img');
-      img.classList.add(memeClass, 'hidden');
+      img.classList.add(memeClass);
       img.title = title;
       img.src = url;
 
@@ -45,11 +45,7 @@ window.onload = () => {
     });
 
     imagesLoaded(images).on('progress', (instance, image) => {
-      const img = image.img;
-      img.classList.remove('hidden');
-      img.classList.add('loaded');
-
-      const imageWrapper = img.parentElement;
+      const imageWrapper = image.img.parentElement;
       grid.appendChild(imageWrapper);
 
       if (masonry) {

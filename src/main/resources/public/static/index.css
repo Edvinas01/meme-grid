@@ -1,45 +1,34 @@
-#header {
-    margin-bottom: 10px;
+.header {
+    overflow: hidden;
+    position: fixed;
+    z-index: 1;
+    height: 32px;
+    width: 100%;
+    top: 0;
 }
 
 body {
-    margin: 0;
+    font-family: sans-serif;
+    margin: 32px 0 0;
 }
 
 .dark-background {
     background-color: #0f1210;
 }
 
-.block {
+.block-button {
+    background-color: orange;
     display: block;
     width: 100%;
+    height: 100%;
     border: none;
-    background-color: orange;
-    padding: 14px 28px;
+    text-align: center;
     font-size: 16px;
     cursor: pointer;
-    text-align: center;
 }
 
 .list-meme {
     width: 100%;
-}
-
-.hidden {
-    display: none;
-}
-
-@keyframes zoom-in {
-    from {
-        transform: scale(0.1);
-    }
-    to {
-        transform: scale(1);
-    }
-}
-
-.loaded {
-    animation: zoom-in 0.5s;
 }
 
 .meme-sizer, .meme {
@@ -53,11 +42,11 @@ body {
 }
 
 .meme {
-    transition: all .2s ease-in-out;
+    transition: box-shadow, transform 0.2s ease-in-out;
 }
 
 .meme:hover {
-    box-shadow: 0 0 100px #000000;
+    box-shadow: 0 0 10px #000000;
     transform: scale(1.1);
-    z-index: 2;
+    z-index: 1;
 }
