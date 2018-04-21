@@ -1,6 +1,7 @@
 window.onload = () => {
   const styleButton = document.getElementById('style-switch');
   const preferList = 'true' === localStorage.getItem('prefer-list');
+  const grid = document.getElementById('grid');
 
   if (preferList) {
     styleButton.innerText = 'I don\'t like lists';
@@ -17,27 +18,51 @@ window.onload = () => {
     ? 'list-meme'
     : 'meme';
 
-  const grid = document.getElementById('grid');
-  fetch('/api/memes')
-    .then(res => res.json())
-    .then(images => {
-      grid.innerHTML += images
-        .map(img => `
-          <a href="${img.url}" target="_blank">
-            <img class="${memeClass}" src="${img.url}" title="${img.title}"/>
-          </a>
-        `)
-        .join('');
-    })
-    .then(() => {
-      if (!preferList) {
-        new Masonry(grid, {
-          percentPosition: true,
-          itemSelector: `.${memeClass}`,
-          columnWidth: '.meme-sizer'
-        });
+  const mapImages = images => {
+    return images.map(image => {
+      const {title, url} = image;
+
+      const a = document.createElement('a');
+      a.target = '_blank';
+      a.href = url;
+
+      const img = document.createElement('img');
+      img.classList.add(memeClass, 'hidden');
+      img.title = title;
+      img.src = url;
+
+      a.appendChild(img);
+
+      return a;
+    });
+  };
+
+  const showImages = images => {
+    const masonry = preferList ? null : new Masonry(grid, {
+      percentPosition: true,
+      itemSelector: `.${memeClass}`,
+      columnWidth: '.meme-sizer'
+    });
+
+    imagesLoaded(images).on('progress', (instance, image) => {
+      const img = image.img;
+      img.classList.remove('hidden');
+      img.classList.add('loaded');
+
+      const imageWrapper = img.parentElement;
+      grid.appendChild(imageWrapper);
+
+      if (masonry) {
+        masonry.appended(imageWrapper);
+        masonry.layout();
       }
-    })
+    });
+  };
+
+  fetch('/api/memes')
+    .then(response => response.json())
+    .then(mapImages)
+    .then(showImages)
     .catch(() => {
       grid.innerText = 'Memes could not be fetched :(';
     });

@@ -1,29 +1,26 @@
-buildscript {
-    ext {
-        kotlinVersion = '1.2.21'
-        exposedVersion = '0.10.1'
-        postgresDriverVersion = '42.2.1'
-        javaSparkVersion = '2.7.1'
-        apacheCommonsCliVersion = '1.4'
-        jsonVersion = '20180130'
-        slf4jVersion = '1.7.25'
-    }
-}
-
 plugins {
     id 'com.github.johnrengelman.shadow' version '2.0.2'
-    id 'org.jetbrains.kotlin.jvm' version '1.2.21'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.40'
+}
+
+ext {
+    exposedVersion = '0.10.1'
+    postgresDriverVersion = '42.2.1'
+    javaSparkVersion = '2.7.1'
+    apacheCommonsCliVersion = '1.4'
+    jsonVersion = '20180130'
+    slf4jVersion = '1.7.25'
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
     maven {
-        url "https://dl.bintray.com/kotlin/exposed"
+        url 'https://dl.bintray.com/kotlin/exposed'
     }
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 
     // Core.
     compile "org.jetbrains.exposed:exposed:$exposedVersion"
@@ -47,13 +44,13 @@ shadowJar {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = '1.8'
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = '1.8'
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.5.1'
+    gradleVersion = '4.7'
 }

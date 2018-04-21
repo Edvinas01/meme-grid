@@ -25,6 +25,23 @@ body {
     width: 100%;
 }
 
+.hidden {
+    display: none;
+}
+
+@keyframes zoom-in {
+    from {
+        transform: scale(0.1);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.loaded {
+    animation: zoom-in 0.5s;
+}
+
 .meme-sizer, .meme {
     width: 20%;
 }
