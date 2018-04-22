@@ -1,20 +1,21 @@
-package com.edd.memegrid
+package com.edd.memegrid.app
 
 import com.edd.memegrid.memes.MemeFetcher
 import com.edd.memegrid.memes.MemeSaver
 import com.edd.memegrid.util.TemplateReader
-import com.edd.memegrid.web.Config
-import com.edd.memegrid.web.DbConfig
 import com.edd.memegrid.web.Router
 import org.jetbrains.exposed.sql.Database
 import org.slf4j.LoggerFactory
 import spark.Spark.port
 import spark.Spark.staticFiles
 
-object Application {
+object MemeGrid {
 
-    private val LOG = LoggerFactory.getLogger(Application::class.java)
+    private val LOG = LoggerFactory.getLogger(MemeGrid::class.java)
 
+    /**
+     * Start the meme grid.
+     */
     fun start(config: Config) {
         LOG.debug("Starting application using config: {}", config)
 

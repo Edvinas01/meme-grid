@@ -1,7 +1,8 @@
 package com.edd.memegrid
 
-import com.edd.memegrid.web.Config
-import com.edd.memegrid.web.DbConfig
+import com.edd.memegrid.app.MemeGrid
+import com.edd.memegrid.app.Config
+import com.edd.memegrid.app.DbConfig
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.DefaultParser
 import org.apache.commons.cli.HelpFormatter
@@ -79,23 +80,26 @@ fun main(args: Array<String>) {
 
     val config = Config(
             port = cli.getOptionValue(port.opt)?.toIntOrNull() ?: 8080,
-            enableTemplateCaching = cli.isFlagged(staticFileCaching),
-            enableMemeCaching = cli.isFlagged(memeCaching),
+            enableTemplateCaching = cli flagged staticFileCaching,
+            enableMemeCaching = cli flagged memeCaching,
             dbConfig = DbConfig(
-                    username = cli.asString(dbUsername) ?: "memes",
-                    password = cli.asString(dbPassword) ?: "memes",
-                    url = cli.asString(dbUrl) ?: "localhost:5432/memes"
+                    username = cli string dbUsername ?: "memes",
+                    password = cli string dbPassword ?: "memes",
+                    url = cli string dbUrl ?: "localhost:5432/memes"
             )
     )
 
-    Application.start(config)
+    MemeGrid.start(config)
 }
 
-private fun CommandLine.isFlagged(option: Option) =
+/**
+ * @return true if option is flagged in the command line or false otherwise.
+ */
+private infix fun CommandLine.flagged(option: Option) =
         hasOption(option.opt)
 
 /**
  * @return option value as string.
  */
-private fun CommandLine.asString(option: Option) =
+private infix fun CommandLine.string(option: Option) =
         getOptionValue(option.opt)?.toString()

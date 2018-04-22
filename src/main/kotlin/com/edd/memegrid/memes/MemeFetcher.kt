@@ -26,7 +26,11 @@ class MemeFetcher(
                     .limit(maxMemes)
                     .orderBy(StoredMemes.id, isAsc = false).map {
 
-                Meme(it[StoredMemes.title], it[StoredMemes.url])
+                Meme(
+                        it[StoredMemes.id].value,
+                        it[StoredMemes.title],
+                        it[StoredMemes.url]
+                )
             }
 
             if (memeCaching) {

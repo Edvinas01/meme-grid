@@ -1,4 +1,4 @@
-package com.edd.memegrid.web
+package com.edd.memegrid.app
 
 import java.util.concurrent.TimeUnit
 

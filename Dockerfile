@@ -1,7 +1,5 @@
 FROM openjdk:8
 
-# ENV DATABASE_URL db:5432/memes
-
 WORKDIR /memegrid
 ADD . /memegrid
 

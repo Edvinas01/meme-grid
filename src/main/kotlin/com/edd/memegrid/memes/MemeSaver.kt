@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class MemeSaver(
@@ -13,7 +14,7 @@ class MemeSaver(
 ) {
 
     private companion object {
-        private val LOG = LoggerFactory.getLogger(MemeSaver::class.java)
+        val LOG: Logger = LoggerFactory.getLogger(MemeSaver::class.java)
     }
 
     init {
@@ -27,18 +28,23 @@ class MemeSaver(
      *
      * @return persisted meme.
      */
-    fun saveMeme(meme: Meme) = transaction(database) {
-        LOG.debug("Saving new meme: {}", meme)
+    fun saveMeme(title: String, url: String) = transaction(database) {
+        LOG.debug("Saving new meme, title: {}, url: {}", title, url)
 
         val id = StoredMemes.insertAndGetId {
-            it[title] = meme.title
-            it[url] = meme.url
+            it[StoredMemes.title] = title
+            it[StoredMemes.url] = url
         }.value
 
         StoredMemes.select {
             StoredMemes.id eq id
         }.first().let { row ->
-            val saved = Meme(row[StoredMemes.title], row[StoredMemes.url])
+            val saved = Meme(
+                    row[StoredMemes.id].value,
+                    row[StoredMemes.title],
+                    row[StoredMemes.url]
+            )
+
             memeSaveListeners.forEach { listener ->
                 listener.onMemeSaved(saved)
             }

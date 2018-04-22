@@ -20,13 +20,14 @@ window.onload = () => {
 
   const mapImages = images => {
     return images.map(image => {
-      const {title, url} = image;
+      const {title, url, id} = image;
 
       const a = document.createElement('a');
       a.target = '_blank';
       a.href = url;
 
       const img = document.createElement('img');
+      img.setAttribute('data-id', id);
       img.classList.add(memeClass);
       img.title = title;
       img.src = url;

@@ -1,4 +1,4 @@
-package com.edd.memegrid.web
+package com.edd.memegrid.app
 
 data class DbConfig(
         val username: String,
@@ -6,5 +6,5 @@ data class DbConfig(
         val url: String
 ) {
 
-    override fun toString() = "DbConfig(Secret)"
+    override fun toString() = "${DbConfig::class.simpleName}(Secret)"
 }

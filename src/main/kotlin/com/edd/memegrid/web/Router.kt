@@ -13,12 +13,13 @@ import com.edd.memegrid.util.STATUS_CODE_SERVER_ERROR
 import com.edd.memegrid.util.STATUS_CODE_UNSUPPORTED_MEDIA_TYPE
 import com.edd.memegrid.util.TemplateReader
 import com.edd.memegrid.util.accept
+import com.edd.memegrid.util.string
 import com.edd.memegrid.util.html
 import com.edd.memegrid.util.json
-import org.json.JSONArray
+import com.edd.memegrid.util.jsonBody
+import com.edd.memegrid.util.jsonError
 import org.json.JSONException
 import org.json.JSONObject
-import org.json.JSONTokener
 import org.postgresql.util.PSQLException
 import spark.Request
 import spark.Response
@@ -26,6 +27,7 @@ import spark.Route
 import spark.Spark.exception
 import spark.Spark.get
 import spark.Spark.post
+import kotlin.reflect.KClass
 
 class Router(
         private val memeFetcher: MemeFetcher,
@@ -39,21 +41,21 @@ class Router(
         }
 
         getJson("/api/memes") { _, _ ->
-            JSONArray(memeFetcher.getMemes().map { meme ->
+            memeFetcher.getMemes().map { meme ->
                 meme.json
-            }).toString()
+            }
         }
 
         postJson("/api/memes") { req, res ->
             val json = req.jsonBody
 
-            val saved = memeSaver.saveMeme(Meme(
-                    json.asString("title"),
-                    json.asString("url")
-            )).json
+            val saved = memeSaver.saveMeme(
+                    json string "title",
+                    json string "url"
+            )
 
             res.status(STATUS_CODE_CREATED)
-            saved
+            saved.json
         }
 
         get("*") { req, res ->
@@ -70,9 +72,9 @@ class Router(
             }
         }
 
-        jsonExceptionHandler(BadMemeException::class.java, STATUS_CODE_BAD_REQUEST)
-        jsonExceptionHandler(JSONException::class.java, STATUS_CODE_BAD_REQUEST)
-        jsonExceptionHandler(PSQLException::class.java, STATUS_CODE_BAD_REQUEST)
+        BadMemeException::class jsonException STATUS_CODE_BAD_REQUEST
+        JSONException::class jsonException STATUS_CODE_BAD_REQUEST
+        PSQLException::class jsonException STATUS_CODE_BAD_REQUEST
 
         exception(Exception::class.java) { e, req, res ->
             res.status(STATUS_CODE_SERVER_ERROR)
@@ -89,37 +91,13 @@ class Router(
     }
 
     /**
-     * @return property from json object as string.
+     * @return meme as json object.
      */
-    private fun JSONObject.asString(name: String): String {
-        if (!has(name)) {
-            throw BadMemeException("$name must be present")
-        }
-        return get(name)
-                as? String
-                ?: throw BadMemeException("$name mut be a string")
-    }
-
-    /**
-     * @return parsed json object from request.
-     */
-    private val Request.jsonBody
-        get() = JSONObject(JSONTokener(body()))
-
-    /**
-     * @return meme converted to json string.
-     */
-    private val Meme.json
+    private val Meme.json: JSONObject
         get() = JSONObject()
+                .put("id", id)
                 .put("title", title)
                 .put("url", url)
-
-    /**
-     * @return a Json error response from provided message.
-     */
-    private fun jsonError(message: String) = JSONObject()
-            .put("error", message)
-            .toString()
 
     /**
      * Create a GET html route.
@@ -134,21 +112,6 @@ class Router(
                 res.status(STATUS_CODE_UNSUPPORTED_MEDIA_TYPE)
                 reader.read("415", mapOf("type" to req.accept))
             }
-        }
-    }
-
-    /**
-     * Register an error handler which will return a Json response to the client.
-     */
-    private fun <T : Exception> jsonExceptionHandler(
-            type: Class<T>,
-            status: Int,
-            defaultMessage: String = "") {
-
-        exception(type) { e, _, res ->
-            res.type(MEDIA_TYPE_JSON)
-            res.status(status)
-            res.body(jsonError(e.message ?: defaultMessage))
         }
     }
 
@@ -176,7 +139,18 @@ class Router(
             body(req, res)
         } else {
             res.status(STATUS_CODE_UNSUPPORTED_MEDIA_TYPE)
-            "{\"error\": \"Unsupported media type: ${req.accept}\"}"
+            jsonError("Unsupported media type: ${req.accept}")
+        }
+    }
+
+    /**
+     * Register an error handler which will return a Json response to the client.
+     */
+    private inline infix fun <reified T : Exception> KClass<T>.jsonException(status: Int) {
+        exception(T::class.java) { e, _, res ->
+            res.type(MEDIA_TYPE_JSON)
+            res.status(status)
+            res.body(jsonError(e.message ?: "Error"))
         }
     }
 }
