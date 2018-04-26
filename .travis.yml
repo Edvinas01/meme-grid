@@ -1,12 +1,34 @@
 language: java
+
+sudo: required
+
+install:
+  - true
+
 jdk:
   - oraclejdk8
+
 before_install:
   - chmod +x gradlew
+
 script:
   - ./gradlew clean check
+
 cache:
   directories:
     - ~/.gradle
+
+services:
+  - docker
+
+before_deploy:
+  - chmod +x publish-image.sh
+
+deploy:
+  provider: script
+  script: ./publish-image.sh
+  on:
+    branch: master
+
 notifications:
   email: false

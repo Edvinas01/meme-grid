@@ -46,6 +46,10 @@ window.onload = () => {
     });
 
     imagesLoaded(images).on('progress', (instance, image) => {
+      if (!image.isLoaded) {
+        return;
+      }
+
       const imageWrapper = image.img.parentElement;
       grid.appendChild(imageWrapper);
 

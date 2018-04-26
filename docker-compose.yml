@@ -10,9 +10,9 @@ services:
     ports:
       - 5432:5432
   memegrid:
+    image: edvinas108/meme-grid:latest
     depends_on:
       - db
-    build:
-      context: .
     ports:
       - 8080:8080
+    command: -u db:5432/memes

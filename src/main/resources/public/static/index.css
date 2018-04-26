@@ -1,52 +1,52 @@
 .header {
-    overflow: hidden;
-    position: fixed;
-    z-index: 1;
-    height: 32px;
-    width: 100%;
-    top: 0;
+  overflow: hidden;
+  position: fixed;
+  z-index: 1;
+  height: 5vh;
+  width: 100%;
+  top: 0;
 }
 
 body {
-    font-family: sans-serif;
-    margin: 32px 0 0;
+  font-family: sans-serif;
+  margin: 5vh 0 0;
 }
 
 .dark-background {
-    background-color: #0f1210;
+  background-color: #0f1210;
 }
 
 .block-button {
-    background-color: orange;
-    display: block;
-    width: 100%;
-    height: 100%;
-    border: none;
-    text-align: center;
-    font-size: 16px;
-    cursor: pointer;
+  background-color: orange;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  text-align: center;
+  font-size: 3vh;
+  cursor: pointer;
 }
 
 .list-meme {
-    width: 100%;
+  width: 100%;
 }
 
 .meme-sizer, .meme {
-    width: 20%;
+  width: 20%;
 }
 
-@media screen and (max-width: 480px) {
-    .meme-sizer, .meme {
-        width: 50%;
-    }
+@media only screen and (max-width: 600px) {
+  .meme-sizer, .meme {
+    width: 50%;
+  }
 }
 
 .meme {
-    transition: box-shadow, transform 0.2s ease-in-out;
+  transition: box-shadow, transform 0.2s ease-in-out;
 }
 
 .meme:hover {
-    box-shadow: 0 0 10px #000000;
-    transform: scale(1.1);
-    z-index: 1;
+  box-shadow: 0 0 10px #000000;
+  transform: scale(1.1);
+  z-index: 1;
 }

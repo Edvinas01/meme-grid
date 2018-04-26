@@ -1,6 +1,7 @@
-FROM openjdk:8
+# Copy built jar.
+FROM openjdk:alpine
 
-WORKDIR /memegrid
-ADD . /memegrid
+WORKDIR /opt/memegrid
+COPY /build/libs/meme-grid.jar .
 
-CMD ./gradlew shadowJar && java -jar build/libs/meme-grid.jar -u db:5432/memes
+ENTRYPOINT ["java", "-jar", "meme-grid.jar"]
