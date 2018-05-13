@@ -15,4 +15,4 @@ services:
     ports:
       - 8080:8080
     restart: on-failure
-    command: -u db:5432/memes
+    command: -u db:5432/memes -d https://memes.danevicius.lt -c

@@ -1,7 +1,7 @@
 package com.edd.memegrid.app
 
-import com.edd.memegrid.memes.MemeFetcher
-import com.edd.memegrid.memes.MemeSaver
+import com.edd.memegrid.memes.MemeManager
+import com.edd.memegrid.util.ImageValidator
 import com.edd.memegrid.util.TemplateReader
 import com.edd.memegrid.web.Router
 import org.jetbrains.exposed.sql.Database
@@ -21,8 +21,7 @@ object MemeGrid {
 
         val database = connectDatabase(config.dbConfig)
 
-        val memeFetcher = MemeFetcher(config.enableMemeCaching, config.maxMemes, database)
-        val memeSaver = MemeSaver(database, listOf(memeFetcher))
+        val memeManager = MemeManager(config.maxMemes, database)
 
         val contentReader = TemplateReader(
                 enableCaching = config.enableTemplateCaching,
@@ -35,7 +34,12 @@ object MemeGrid {
         // Note that port mapping must go before route creation.
         port(config.port)
 
-        Router(memeFetcher, memeSaver, contentReader).start()
+        Router(
+                ImageValidator(config.validatorTimeoutMillis),
+                memeManager,
+                contentReader,
+                config.domain
+        ).start()
 
         LOG.debug("Application started on port: {}", config.port)
     }
