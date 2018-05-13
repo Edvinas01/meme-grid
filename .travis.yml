@@ -22,11 +22,11 @@ services:
   - docker
 
 before_deploy:
-  - chmod +x publish-image.sh
+  - chmod +x scripts/publish-image.sh
 
 deploy:
   provider: script
-  script: ./publish-image.sh
+  script: ./scripts/publish-image.sh
   on:
     branch: master
 

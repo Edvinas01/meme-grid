@@ -1,4 +1,3 @@
-# Copy built jar.
 FROM openjdk:alpine
 
 WORKDIR /opt/memegrid

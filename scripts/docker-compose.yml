@@ -3,7 +3,6 @@ version: '3.1'
 services:
   db:
     image: postgres
-    restart: always
     environment:
       POSTGRES_USER: memes
       POSTGRES_PASSWORD: memes
@@ -15,4 +14,5 @@ services:
       - db
     ports:
       - 8080:8080
+    restart: on-failure
     command: -u db:5432/memes
