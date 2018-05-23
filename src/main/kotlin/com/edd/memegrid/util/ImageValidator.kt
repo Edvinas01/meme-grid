@@ -12,7 +12,11 @@ import java.net.UnknownHostException
 class ImageValidator(private val timeout: Int) {
 
     private companion object {
-        private val LOG: Logger = LoggerFactory.getLogger(ImageValidator::class.java)
+        const val REQUEST_METHOD = "HEAD"
+        const val USER_AGENT =
+                "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"
+
+        val LOG: Logger = LoggerFactory.getLogger(ImageValidator::class.java)
     }
 
     /**
@@ -45,9 +49,13 @@ class ImageValidator(private val timeout: Int) {
      */
     private fun isImage(url: URL) = try {
         with(url.openConnection() as HttpURLConnection) {
+            setRequestProperty(HEADER_USER_AGENT, USER_AGENT)
+            setRequestProperty(HEADER_ACCEPT, MEDIA_TYPE_ANY)
+
             connectTimeout = timeout
             readTimeout = timeout
-            requestMethod = "HEAD"
+            requestMethod = REQUEST_METHOD
+
             contentType
                     ?.contains("image")
                     ?: false

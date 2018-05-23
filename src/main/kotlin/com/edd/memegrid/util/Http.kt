@@ -10,6 +10,7 @@ import spark.Spark.get
 import spark.Spark.post
 import kotlin.reflect.KClass
 
+const val HEADER_USER_AGENT = "User-Agent"
 const val HEADER_ACCEPT = "Accept"
 
 const val MEDIA_TYPE_JSON = "application/json"
