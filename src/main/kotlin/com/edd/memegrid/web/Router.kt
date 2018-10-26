@@ -3,6 +3,7 @@ package com.edd.memegrid.web
 import com.edd.memegrid.memes.Meme
 import com.edd.memegrid.memes.MemeManager
 import com.edd.memegrid.util.BadMemeException
+import com.edd.memegrid.util.BadPageException
 import com.edd.memegrid.util.ImageValidator
 import com.edd.memegrid.util.MEDIA_TYPE_HTML
 import com.edd.memegrid.util.MEDIA_TYPE_JSON
@@ -17,6 +18,7 @@ import com.edd.memegrid.util.accept
 import com.edd.memegrid.util.deleteJson
 import com.edd.memegrid.util.getJson
 import com.edd.memegrid.util.html
+import com.edd.memegrid.util.intParam
 import com.edd.memegrid.util.json
 import com.edd.memegrid.util.jsonBody
 import com.edd.memegrid.util.jsonError
@@ -61,6 +63,10 @@ class Router(
 
         getJson("/api/memes") { _, _ ->
             memeManager.getMemes().json
+        }
+
+        getJson("/api/memes/page/:page") { req, _ ->
+            memeManager.getMemes(req intParam "page").json
         }
 
         getJson("/api/memes/:id") { req, _ ->
@@ -111,6 +117,7 @@ class Router(
 
         MemeNotFoundException::class jsonException STATUS_CODE_NOT_FOUND
         BadMemeException::class jsonException STATUS_CODE_BAD_REQUEST
+        BadPageException::class jsonException STATUS_CODE_BAD_REQUEST
         JSONException::class jsonException STATUS_CODE_BAD_REQUEST
 
         exception(Exception::class.java) { e, req, res ->

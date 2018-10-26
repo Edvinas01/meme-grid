@@ -49,10 +49,10 @@ class MemeManager(
     /**
      * @return list of latest memes from database.
      */
-    fun getMemes() = transaction(database) {
+    fun getMemes(page: Int = 0) = transaction(database) {
         StoredMemes
                 .selectAll()
-                .limit(maxMemes)
+                .limit(maxMemes, page * maxMemes)
                 .orderBy(StoredMemes.id, isAsc = false)
                 .map(::map)
     }

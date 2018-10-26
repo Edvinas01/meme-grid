@@ -54,6 +54,14 @@ val Request.jsonBody
     get() = JSONObject(body())
 
 /**
+ * @return parameter as an Int number.
+ */
+infix fun Request.intParam(name: String): Int = params(name)
+        .trim()
+        .toIntOrNull()
+        ?: throw BadPageException("Parameter $name must be a number")
+
+/**
  * @return parameter as a Long number.
  */
 infix fun Request.longParam(name: String): Long = params(name)

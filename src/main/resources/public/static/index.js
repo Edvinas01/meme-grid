@@ -60,11 +60,40 @@ window.onload = () => {
     });
   };
 
-  fetch('/api/memes')
-    .then(response => response.json())
-    .then(mapImages)
-    .then(showImages)
-    .catch(() => {
-      grid.innerText = 'Memes could not be fetched :(';
-    });
+  let isLoading = false;
+  let isCompleted = false;
+  let currentPage = 0;
+
+  const loadImages = () => {
+    if (isLoading || isCompleted) return;
+    isLoading = true;
+
+    fetch('/api/memes/page/' + currentPage)
+      .then(response => response.json())
+      .then(images => {
+        currentPage++;
+        isCompleted = images.length === 0;
+        if (isCompleted) {
+          window.onscroll = null;
+        }
+
+        return images;
+      })
+      .then(mapImages)
+      .then(showImages)
+      .catch(() => {
+        grid.innerText = 'Memes could not be fetched :(';
+      })
+      .finally(() => {
+        isLoading = false;
+      });
+  };
+
+  loadImages();
+
+  window.onscroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      loadImages();
+    }
+  }
 };

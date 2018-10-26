@@ -1,3 +1,7 @@
+html {
+  min-height: 101%;
+}
+
 .header {
   overflow: hidden;
   position: fixed;
