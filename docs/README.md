@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://memes.danevicius.lt" target="_blank">
+  <a href="#" target="_blank">
     <img src="screenshot.jpeg"/>
   </a>
 </p>
