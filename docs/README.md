@@ -4,7 +4,7 @@
   </a>
 </p>
 
-# Meme Grid [![Build Status](https://travis-ci.org/Edvinas01/meme-grid.svg?branch=master)](https://travis-ci.org/Edvinas01/meme-grid)
+# Meme Grid
 The only hub for memes that you'll ever need.
 
 ## Building
