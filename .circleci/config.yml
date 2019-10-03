@@ -10,8 +10,8 @@ jobs:
       - restore_cache:
           key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
-          -name: Run check
-          -command: ./gradlew check
+          name: Run check
+          command: ./gradlew check
 workflows:
   version: 2
   check:
