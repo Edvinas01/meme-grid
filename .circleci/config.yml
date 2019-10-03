@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  check:
+    docker:
+      - image: circleci/openjdk:8
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+      - run:
+          -name: Run check
+          -command: ./gradlew check
+workflows:
+  version: 2
+  check:
+    jobs:
+      - check
