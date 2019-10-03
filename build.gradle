@@ -1,6 +1,7 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version '5.1.0'
     id 'org.jetbrains.kotlin.jvm' version '1.2.40'
+    id "io.gitlab.arturbosch.detekt" version "1.0.1"
 }
 
 ext {
@@ -53,4 +54,24 @@ compileTestKotlin {
 
 wrapper {
     gradleVersion = '5.6.2'
+}
+
+detekt {
+    input = files("src/main/kotlin")
+
+    reports {
+        xml {
+            enabled = true
+            destination = file("build/reports/detekt.xml")
+        }
+        html {
+
+            enabled = true
+            destination = file("build/reports/detekt.html")
+        }
+        txt {
+            enabled = true
+            destination = file("build/reports/detekt.txt")
+        }
+    }
 }
