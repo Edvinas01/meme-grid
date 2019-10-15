@@ -19,7 +19,6 @@ extra["jacksonModuleKotlinVersion"] = "2.10.0"
 
 repositories {
     jcenter()
-    maven { setUrl("https://dl.bintray.com/kotlin/exposed") }
 }
 
 dependencies {
@@ -46,57 +45,44 @@ dependencies {
     testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:${project.extra["jacksonModuleKotlinVersion"]}")
 }
 
-tasks.shadowJar {
-    archiveName = "meme-grid.jar"
-    manifest {
-        attributes["Main-Class"] = "com.edd.memegrid.LauncherKt"
+tasks {
+    shadowJar {
+        archiveClassifier.set("")
+        archiveBaseName.set("meme-grid")
+
+        manifest {
+            attributes["Main-Class"] = "com.edd.memegrid.LauncherKt"
+        }
     }
-}
 
-tasks.compileKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
-}
+    compileKotlin {
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 
-tasks.compileTestKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
-}
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 
-tasks.test {
-    // enable JUnit Platform (a.k.a. JUnit 5) support
-    useJUnitPlatform()
-
-    // explicitly include tests
-    include("**/*Test.class")
-
-    // show standard out and standard error of the test JVM(s) on the console
-    testLogging.showExceptions = true
-
-    // listen to events in the test execution lifecycle
-    beforeTest(closureOf<TestDescriptor> {
-        logger.lifecycle("Running ${this.className}.${this.name}")
-    })
-}
-
-tasks.wrapper {
-    gradleVersion = "5.6.2"
-}
-
-tasks.detekt {
-    input = files("src/main/kotlin")
-
-    reports {
-        xml {
-            enabled = true
-            destination = file("build/reports/detekt.xml")
+    detekt {
+        reports {
+            txt.enabled = false
+            xml.enabled = false
         }
-        html {
+    }
 
-            enabled = true
-            destination = file("build/reports/detekt.html")
-        }
-        txt {
-            enabled = true
-            destination = file("build/reports/detekt.txt")
-        }
+    check {
+        finalizedBy(jacocoTestReport)
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    wrapper {
+        gradleVersion = "5.6.2"
+    }
+
+    clean {
+        delete("logs", "out")
     }
 }
